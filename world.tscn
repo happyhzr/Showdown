@@ -1,0 +1,200 @@
+[gd_scene format=3 uid="uid://l28itor48x1o"]
+
+[ext_resource type="Texture2D" uid="uid://cmn1nso2jsx8m" path="res://assets/textures/background.png" id="1_f3sb7"]
+[ext_resource type="Script" uid="uid://ctw2fw5ola68i" path="res://world.gd" id="1_gbfbk"]
+[ext_resource type="Texture2D" uid="uid://bqysxonpcssfo" path="res://assets/textures/tumbleweed.png" id="2_fj7yv"]
+[ext_resource type="Texture2D" uid="uid://cx2j7e0d5kf1q" path="res://assets/textures/plank.png" id="3_tlwt5"]
+[ext_resource type="FontFile" uid="uid://dmycah44wapmp" path="res://assets/fonts/PrStart.ttf" id="4_aqk2v"]
+[ext_resource type="PackedScene" uid="uid://dbb6okeh30vgp" path="res://cowboy.tscn" id="5_036b0"]
+[ext_resource type="Texture2D" uid="uid://dxo3rtskqtj0k" path="res://assets/textures/cowboy-2.png" id="6_dwbse"]
+[ext_resource type="Texture2D" uid="uid://co4o5vomyxy36" path="res://assets/textures/p-key.png" id="7_pkg7o"]
+[ext_resource type="AudioStream" uid="uid://peolymtaufa3" path="res://assets/music/farwest.mp3" id="9_ioo17"]
+[ext_resource type="AudioStream" uid="uid://b153skpf7ri33" path="res://assets/music/farwest-end.mp3" id="10_wse8f"]
+
+[sub_resource type="Animation" id="Animation_fj7yv"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Tumbleweed:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-8, 111)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Tumbleweed:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Plank:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(120, -13)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("RestartLabel:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_wse8f"]
+resource_name = "restart"
+loop_mode = 1
+step = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("RestartLabel:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+
+[sub_resource type="Animation" id="Animation_tlwt5"]
+resource_name = "tumble"
+length = 2.0
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Tumbleweed:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-8, 111), Vector2(249, 111)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Tumbleweed:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.2831855]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Plank:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.5, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(120, -13), Vector2(120, 32)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_aqk2v"]
+_data = {
+&"RESET": SubResource("Animation_fj7yv"),
+&"restart": SubResource("Animation_wse8f"),
+&"tumble": SubResource("Animation_tlwt5")
+}
+
+[node name="World" type="Node2D" unique_id=752823239]
+script = ExtResource("1_gbfbk")
+
+[node name="Background" type="Sprite2D" parent="." unique_id=964412493]
+texture = ExtResource("1_f3sb7")
+centered = false
+
+[node name="Tumbleweed" type="Sprite2D" parent="." unique_id=1384923064]
+position = Vector2(-8, 111)
+texture = ExtResource("2_fj7yv")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=332455453]
+libraries/ = SubResource("AnimationLibrary_aqk2v")
+autoplay = &"tumble"
+
+[node name="Plank" type="Sprite2D" parent="." unique_id=298331272]
+position = Vector2(120, -13)
+texture = ExtResource("3_tlwt5")
+
+[node name="Label" type="Label" parent="Plank" unique_id=1777532811]
+modulate = Color(0.09803922, 0.09803922, 0.09803922, 1)
+offset_left = -26.0
+offset_top = -4.999995
+offset_right = 28.0
+offset_bottom = 18.000004
+theme_override_fonts/font = ExtResource("4_aqk2v")
+theme_override_font_sizes/font_size = 9
+text = "STEADY"
+
+[node name="Cowboy" parent="." unique_id=541457111 instance=ExtResource("5_036b0")]
+position = Vector2(75, 70)
+
+[node name="Cowboy2" parent="." unique_id=1467341935 instance=ExtResource("5_036b0")]
+position = Vector2(160, 70)
+action_name = "p2_shoot"
+
+[node name="CowboySprite" parent="Cowboy2" index="0" unique_id=908543645]
+texture = ExtResource("6_dwbse")
+flip_h = true
+
+[node name="KeyboardSprite" parent="Cowboy2" index="2" unique_id=1796314027]
+texture = ExtResource("7_pkg7o")
+
+[node name="Timer" type="Timer" parent="." unique_id=1830896732]
+one_shot = true
+autostart = true
+
+[node name="IntroMusicPlayer" type="AudioStreamPlayer" parent="." unique_id=1183336137]
+stream = ExtResource("9_ioo17")
+autoplay = true
+
+[node name="EndMusicPlayer" type="AudioStreamPlayer" parent="." unique_id=1878315113]
+stream = ExtResource("10_wse8f")
+
+[node name="RestartLabel" type="Label" parent="." unique_id=2074324274]
+visible = false
+offset_left = 73.0
+offset_top = 100.0
+offset_right = 163.0
+offset_bottom = 123.0
+theme_override_fonts/font = ExtResource("4_aqk2v")
+theme_override_font_sizes/font_size = 5
+text = "PRESS R TO RESTART"
+
+[connection signal="game_over" from="Cowboy" to="." method="game_over"]
+[connection signal="shot_gun" from="Cowboy" to="." method="resolve_duel"]
+[connection signal="game_over" from="Cowboy2" to="." method="game_over"]
+[connection signal="shot_gun" from="Cowboy2" to="." method="resolve_duel"]
+[connection signal="timeout" from="Timer" to="." method="start_duel"]
+
+[editable path="Cowboy2"]
